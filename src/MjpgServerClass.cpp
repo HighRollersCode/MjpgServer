@@ -19,19 +19,6 @@ MjpgServerClass::~MjpgServerClass()
 
 void MjpgServerClass::Send_Mjpg_Http_Header(int client_socket)
 {
-    /*
-    Send_String(client_socket,"HTTP/1.0 200 OK\r\n");
-    Send_String(client_socket,
-                    "Server: Mozarella/2.2\r\n"
-                    "Accept-Range: bytes\r\n"
-                    "Connection: close\r\n"
-                    "Max-Age: 0\r\n"
-                    "Expires: 0\r\n"
-                    "Cache-Control: no-cache, private\r\n"
-                    "Pragma: no-cache\r\n"
-                    "Content-Type: multipart/x-mixed-replace; boundary=--mjpegstream\r\n"
-                    "\r\n");
-    */
     // Send out the mjpeg header
     char buffer[2048];
     sprintf(buffer,"%s",
@@ -41,9 +28,6 @@ void MjpgServerClass::Send_Mjpg_Http_Header(int client_socket)
         "boundary=--mjpegstream\r\n\r\n");
 
     Send_String(client_socket,buffer);
-
-
-
 }
 void MjpgServerClass::Handle_New_Client_Connected(int client_socket)
 {

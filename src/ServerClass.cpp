@@ -126,7 +126,7 @@ void ServerClass::Process()
     counter++;
     //if ((counter & 0x7ff) == 0) printf("select %d\n",counter);
     status = select(m_MaxSocket+1,&readset,NULL,NULL,&timeout);
-    //printf("select completed \n");
+
 
     if (status == -1)
     {
@@ -161,14 +161,6 @@ void ServerClass::Process()
         m_ClientSockets.insert(client_socket);
 
         Handle_New_Client_Connected(client_socket);
-
-        // Now take the listen socket out of the "to be read" socket est
-        //FD_CLR(m_ListenSocket,&readset);
-
-        // Send something back!
-        //const char * message = " Hello Client!";
-        //status = send(client_socket,message,strlen(message),0);
-        //LOG(("send to new client: %s\n",message));
     }
 
     // Handle all the rest of the clients that have something for us to read
@@ -195,10 +187,6 @@ void ServerClass::Process()
                 msg_buf[bytes_recv] = 0;
                 LOG(("recv: %s\n",msg_buf));
                 Handle_Incoming_Message(i,msg_buf);
-
-                // Send something back!
-                //const char * message = "Hello Client!";
-                //Send_String(i,message);
             }
         }
     }
@@ -206,7 +194,7 @@ void ServerClass::Process()
 
 void ServerClass::Send_String(int client_socket,const char * msg)
 {
-    int status = send(client_socket,msg,strlen(msg)+1,MSG_NOSIGNAL);
+    int status = send(client_socket,msg,strlen(msg),MSG_NOSIGNAL);
     if (status == -1)
     {
         fprintf(stderr,"send failed, error: %d\n",errno);
